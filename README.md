@@ -106,7 +106,7 @@ localityName_default        = San Francisco
 organizationName            = Organization Name (eg, company)
 organizationName_default    = My Company
 commonName                  = Common Name (e.g. server FQDN or YOUR name)
-commonName_default          = webhook.default.svc
+commonName_default          = webhook.kube-system.svc
 
 [ req_ext ]
 subjectAltName = @alt_names
@@ -116,7 +116,7 @@ subjectAltName = @alt_names
 
 [ alt_names ]
 IP.1   = 192.168.193.11 # 替换为你的本地 IP
-DNS.1  = webhook.default.svc
+DNS.1  = webhook.kube-system.svc
 ```
 
 - 生成证书和密钥：
@@ -131,7 +131,7 @@ kubectl delete secret webhook-certs -n default
 kubectl create secret generic webhook-certs --from-file=certs -n default
 
 ```
-- 更新 MutatingWebhookConfiguration
+- 更新 MutatingWebhookConfiguration的webhooks.clientConfig[n].caBundle
 ```
 caBundle: $(cat certs/tls.crt | base64 | tr -d '\n')
 
