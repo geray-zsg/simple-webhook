@@ -26,18 +26,17 @@ openssl req -newkey rsa:2048 -nodes -keyout certs/tls.key -x509 -days 365 -out c
 
 - 创建secret
 ```
-kubectl create secret generic webhook-certs --from-file=certs -n default
+kubectl create secret generic webhook-certs --from-file=certs -n kube-system
 ```
 
 - 部署deployment和service
 ```
-kubectl apply -f deployment.yaml
+kubectl apply -f deploy/deployment.yaml
 ```
 
-- 部署MutatingWebhookConfiguration和validating-webhook-config
+- 部署admission webhook
 ```
-kubectl apply -f validating-webhook-config.yaml
-kubectl apply -f mutatingwebhookconfigurations.yaml
+kubectl apply -f deploy/webhook/
 ```
 
 # 问题处理
