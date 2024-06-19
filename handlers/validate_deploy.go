@@ -50,7 +50,7 @@ func CheckDeployPrefixHandleValidate(deployPrefix string) http.HandlerFunc {
 			glog.Infof("Deployment.Name===========================================》: %s", deploy)
 
 			if strings.HasPrefix(deploy.Name, deployPrefix) {
-				client, err := types.NewClient()
+				client, err := types.NewDynamicClient()
 				if err != nil {
 					http.Error(w, "could not create Kubernetes client", http.StatusInternalServerError)
 					glog.Errorf("Error creating Kubernetes client: %v", err)

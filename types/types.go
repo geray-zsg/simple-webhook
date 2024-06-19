@@ -40,12 +40,12 @@ type ConfigHandlersParameters struct {
 	DeploymentPrefix string
 }
 
-type Client struct {
+type DynamicClient struct {
 	dynamicClient dynamic.Interface
 }
 
 // 通过调用 types.NewClient() 创建一个新的 Kubernetes 客户端实例。
-func NewClient() (*Client, error) {
+func NewDynamicClient() (*DynamicClient, error) {
 	// 1.GET config in k8s cluster（自动获取部署在 Kubernetes 集群内的 Pod 的服务账户和 API 服务器的地址，无需手动提供 kubeconfig 文件。）
 	config, err := rest.InClusterConfig()
 	if err != nil {
@@ -61,11 +61,11 @@ func NewClient() (*Client, error) {
 	}
 
 	// 3.返回包含动态客户端的 Client 实例
-	return &Client{dynamicClient: dynamicClient}, nil
+	return &DynamicClient{dynamicClient: dynamicClient}, nil
 }
 
 // GetResourceByGVR 根据 GVR 和名称获取资源 是否存在
-func (c *Client) GetResourceByGVR(gvr schema.GroupVersionResource, namespace, name string) (bool, error) {
+func (c *DynamicClient) GetResourceByGVR(gvr schema.GroupVersionResource, namespace, name string) (bool, error) {
 
 	_, err := c.dynamicClient.Resource(gvr).Namespace(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
