@@ -18,9 +18,12 @@ spec:
       containers:
       - name: webhook
         # image: geray/simple-webhook:v1
-        image: repos.cloud.cmft/ruoyi/simple-webhook:v1
+        image: repos.cloud.cmft/ruoyi/simple-webhook:v2.1
         args:
-          - '--enable-namespace-validation=true'
+          - '--validation-namespace-enable=true'
+          - '--validation-deployment-enable=true'
+          - '--tlsCertFile=/etc/webhook/certs/tls.crt'
+          - '--tlsKeyFile=/etc/webhook/certs/tls.key'
           - >-
             --labels=nci.yunshan.net/vpc,kubesphere.io/workspace,kubesphere.io/namespace,ts/aaa
         ports:

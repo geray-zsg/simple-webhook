@@ -33,7 +33,7 @@ func main() {
 	// 定义命令行参数:是否开启相关检查
 	flag.BoolVar(&configEnable.MutatePodEnvInjectedHandle, "mutate-podEnv-Injecte-enable", false, "Enable pod env Injecte. --mutate-podEnv-Injecte-enable")
 	flag.BoolVar(&configEnable.ValidateNamespaceLabelsHandle, "validation-namespace-enable", true, "Enable namespace validation.--validation-namespace-enable")
-	flag.BoolVar(&configEnable.ValidateCheckDeploymentPrefix, "validation-deployment--enable", true, "Enable namespace validation.--validation-deployment--enable")
+	flag.BoolVar(&configEnable.ValidateCheckDeploymentPrefix, "validation-deployment-enable", true, "Enable namespace validation.--validation-deployment-enable")
 
 	// Add glog flags
 	flag.Set("logtostderr", "true")
