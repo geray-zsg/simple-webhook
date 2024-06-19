@@ -7,7 +7,7 @@ git init
 git add README.md
 git commit -m "first commit"
 git branch -M main
-git remote add origin git@github.com:geray-zsg/simple-webhook.git
+git remote add origin https://github.com/geray-zsg/simple-webhook.git
 git push -u origin main
 ```
 …or push an existing repository from the command line
