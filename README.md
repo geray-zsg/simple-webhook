@@ -18,6 +18,13 @@ git push -u origin main
 ```
 
 # 1.部署
+
+## 构建镜像
+```
+docker build -t geray/simple-webhook:v2.1 .
+docker buildx build -t geray/simple-webhook:v2.1 --platform=linux/arm64,linux/amd64 --push .
+```
+
 ## 生成证书
 ```
 mkdir certs
@@ -137,3 +144,7 @@ caBundle: $(cat certs/tls.crt | base64 | tr -d '\n')
 
 ```
 
+# docker镜像加速代理
+```
+
+```
