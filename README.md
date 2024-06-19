@@ -49,7 +49,8 @@ localityName_default        = San Francisco
 organizationName            = Organization Name (eg, company)
 organizationName_default    = My Company
 commonName                  = Common Name (e.g. server FQDN or YOUR name)
-commonName_default          = webhook.default.svc
+commonName_kube-system      = simple-webhook.kube-system.svc
+#commonName_default          = simple-webhook.default.svc
 
 [ req_ext ]
 subjectAltName = @alt_names
@@ -59,7 +60,8 @@ subjectAltName = @alt_names
 
 [ alt_names ]
 IP.1   = 192.168.193.11 # 替换为你的本地 IP
-DNS.1  = webhook.default.svc
+DNS.1  = simple-webhook.kube-system.svc
+#DNS.2  = simple-webhook.default.svc
 ```
 
 - 生成证书和密钥：
@@ -70,7 +72,7 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout certs/tls.key -out c
 - 创建或更新 Kubernetes Secret
 使用生成的证书和密钥更新 Kubernetes Secret：
 ```
-kubectl create secret generic webhook-certs --from-file=certs -n kube-system
+kubectl create secret generic simple-webhook-certs --from-file=certs -n kube-system
 
 ```
 - 更新 MutatingWebhookConfiguration

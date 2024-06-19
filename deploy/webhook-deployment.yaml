@@ -35,13 +35,13 @@ spec:
             cpu: 100m
             memory: 100Mi
         volumeMounts:
-        - name: webhook-certs
+        - name: simple-webhook-certs
           mountPath: /etc/webhook/certs
           readOnly: true
       volumes:
-      - name: webhook-certs
+      - name: simple-webhook-certs
         secret:
-          secretName: webhook-certs
+          secretName: simple-webhook-certs
 ---
 apiVersion: v1
 kind: Service
@@ -56,5 +56,3 @@ spec:
   ports:
   - port: 443
     targetPort: 8443
-  selector:
-    app: simple-webhook
