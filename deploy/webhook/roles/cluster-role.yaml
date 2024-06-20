@@ -1,0 +1,25 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: simple-webhook-gateway-access
+rules:
+- apiGroups: ["gateway.kubesphere.io"]
+  resources: ["gateways"]
+  verbs: ["get", "list"]
+
+---
+# clusterrole的gateway资源权限绑定到kube-system的default的sa
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: gateway-access-binding
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: kube-system
+roleRef:
+  kind: ClusterRole
+  name: gateway-access
+  apiGroup: rbac.authorization.k8s.io
+
