@@ -1,8 +1,18 @@
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: kube-system
+  name: simple-webhook
+  labels:
+    app: simple-webhook
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: simple-webhook-gateway-access
+  name: simple-webhook
+  labels:
+    app: simple-webhook
 rules:
 - apiGroups: ["gateway.kubesphere.io"]
   resources: ["gateways"]
@@ -14,12 +24,13 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: gateway-access-binding
+  labels:
+    app: simple-webhook
 subjects:
 - kind: ServiceAccount
-  name: default
+  name: simple-webhook
   namespace: kube-system
 roleRef:
   kind: ClusterRole
-  name: gateway-access
+  name: simple-webhook
   apiGroup: rbac.authorization.k8s.io
-
