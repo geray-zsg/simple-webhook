@@ -42,7 +42,6 @@ type ConfigHandlersParameters struct {
 
 type DynamicClient struct {
 	dynamicClient dynamic.Interface
-	dynami
 }
 
 // 通过调用 types.NewClient() 创建一个新的 Kubernetes 客户端实例。
