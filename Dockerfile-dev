@@ -1,0 +1,5 @@
+FROM alpine:3.18
+COPY webhook /webhook
+COPY ./certs /etc/webhook/certs
+
+ENTRYPOINT ["/webhook"]

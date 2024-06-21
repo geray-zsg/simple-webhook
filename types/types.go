@@ -64,15 +64,30 @@ func NewDynamicClient() (*DynamicClient, error) {
 	return &DynamicClient{dynamicClient: dynamicClient}, nil
 }
 
-// GetResourceByGVR 根据 GVR 和名称获取资源 是否存在
+// GetResourceByGVR 根据 GVR、命名空间和名称获取资源，检查资源是否存在
 func (c *DynamicClient) GetResourceByGVR(gvr schema.GroupVersionResource, namespace, name string) (bool, error) {
 
+	// unStructData, err := c.dynamicClient.Resource(gvr).Namespace(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	_, err := c.dynamicClient.Resource(gvr).Namespace(namespace).Get(context.TODO(), name, metav1.GetOptions{})
+
+	// var obj ValidateCheckDeploymentPrefix
+	// 使用 runtime.DefaultUnstructuredConverter 转换 item 为对象
+	// runtime.DefaultUnstructuredConverter.FromUnstructured(unStructData.UnstructuredContent())
+
 	if err != nil {
 		if errors.IsNotFound(err) {
-			return false, err
+			// 资源未找到，不是错误情况，只是资源不存在
+			glog.Infof("Not found resource %s of type %s in namespace %s.", name, gvr.Resource, namespace)
+			return false, nil
 		}
+		// 发生其他错误，返回错误
+		glog.Errorf("Error getting resource %s of type %s in namespace %s: %v", name, gvr.Resource, namespace, err)
 		return false, err
 	}
+
+	// 资源找到，打印信息（如果需要）
+	glog.Infof("Found resource %s of type %s in namespace %s.", name, gvr.Resource, namespace)
+	// 通常这里不需要使用 unStructData，除非你想进一步处理它
+
 	return true, nil
 }

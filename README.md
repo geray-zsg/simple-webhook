@@ -21,6 +21,7 @@ git push -u origin main
 
 ## 构建镜像
 ```
+docker build -f Dockerfile-dev -t repos.cloud.cmft/ruoyi/simple-webhook:v2.3 .
 docker build -t geray/simple-webhook:v2.1 .
 docker buildx build -t geray/simple-webhook:v2.1 --platform=linux/arm64,linux/amd64 --push .
 ```
@@ -90,6 +91,12 @@ kubectl apply -f deploy/deployment.yaml
 - 部署admission webhook
 ```
 kubectl apply -f deploy/webhook/
+```
+# 功能
+```
+1.namespace标签验证，禁止删除和修改部分标签
+2.deployment验证，防止用户直接删除网关的deployment
+3.用户自动添加手机label
 ```
 
 # 问题处理

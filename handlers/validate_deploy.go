@@ -25,7 +25,7 @@ func CheckDeployPrefixHandleValidate(deployPrefix string) http.HandlerFunc {
 			glog.Errorf("Error reading request body: %v", err)
 			return
 		}
-		glog.Infof("Request body: %s", string(body))
+		// glog.Infof("Request body: %s", string(body))
 		if err := json.Unmarshal(body, &admissionReview); err != nil {
 			http.Error(w, "could not unmarshal request", http.StatusBadRequest)
 			glog.Errorf("Error unmarshalling request body: %v", err)
@@ -47,7 +47,7 @@ func CheckDeployPrefixHandleValidate(deployPrefix string) http.HandlerFunc {
 			}
 
 			// glog.Infof("deployment: %s", deploy)
-			glog.Infof("Deployment.Name===========================================》: %s", deploy)
+			glog.Infof("Deployment.Name===========================================》: %s", deploy.Name)
 
 			if strings.HasPrefix(deploy.Name, deployPrefix) {
 				client, err := types.NewDynamicClient()
@@ -69,9 +69,13 @@ func CheckDeployPrefixHandleValidate(deployPrefix string) http.HandlerFunc {
 				if err != nil {
 					http.Error(w, "error checking gateway", http.StatusInternalServerError)
 					glog.Errorf("Error checking gateway: %v", err)
+					admissionResponse.Allowed = false
+					admissionResponse.Result = &metav1.Status{
+						Message: fmt.Sprintf("Error checking gateway: %s", err),
+					}
 					return
 				}
-
+				glog.Infof("--------------------------------------> exists: %s", exists)
 				if exists {
 					glog.Infof("Gateway %s exists, cannot delete Deployment %s", gatewayName, deploy.Name)
 					admissionResponse.Allowed = false
